@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StatRepository extends CrudRepository<Stat, Long> {
 
-    Stat findByUserID(Long id);
+    Stat findByUserID(String userId);
 
 }

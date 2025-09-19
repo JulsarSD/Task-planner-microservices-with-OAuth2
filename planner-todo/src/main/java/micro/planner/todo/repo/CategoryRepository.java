@@ -14,9 +14,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT c FROM Category c where " +
             "(:title is null or :title='' " +
             " or lower(c.title) like lower(concat('%', :title, '%'))) " +
-            " and c.userID=:id " +
+            " and c.userID=:userId " +
             " order by c.title asc ")
-    List<Category> findByTitle(@Param("title") String title, @Param("id") Long id);
+    List<Category> findByTitle(@Param("title") String title, @Param("userId") String userId);
 
-    List<Category> findByUserIDOrderByTitleAsc(Long id);
+    List<Category> findByUserIDOrderByTitleAsc(String userId);
 }

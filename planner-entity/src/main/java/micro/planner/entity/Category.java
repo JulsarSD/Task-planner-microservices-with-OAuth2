@@ -29,7 +29,7 @@ public class Category {
     private Long uncompletedCount;
 
     @Column(name="user_id")
-    private Long userID;
+    private String userID;
 
     @Override
     public String toString() {

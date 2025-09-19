@@ -1,7 +1,6 @@
 package micro.planner.todo.controller;
 
 import micro.planner.entity.Task;
-import micro.planner.todo.feign.UserFeignClient;
 import micro.planner.todo.search.TaskSearchValues;
 import micro.planner.todo.service.TaskService;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -27,21 +28,19 @@ public class TaskController {
 
     private final TaskService taskService;
 
-
-    private UserFeignClient userFeignClient;
-
-    public TaskController(TaskService taskService, UserFeignClient userFeignClient) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.userFeignClient = userFeignClient;
     }
 
     @PostMapping("/all")
-    public ResponseEntity<List<Task>> findAll(@RequestBody Long userId) {
+    public ResponseEntity<List<Task>> findAll(@RequestBody String userId) {
         return ResponseEntity.ok(taskService.findAll(userId));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Task> add(@RequestBody Task task) {
+    public ResponseEntity<Task> add(@RequestBody Task task, @AuthenticationPrincipal Jwt jwt) {
+
+        task.setUserID(jwt.getSubject());
 
         if (task.getId() != null && task.getId() != 0) {
             return new ResponseEntity("redundant param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
@@ -51,7 +50,7 @@ public class TaskController {
             return new ResponseEntity("missed param: title MUST be not null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (userFeignClient.findUserById(task.getUserID()) != null) {
+        if (!task.getUserID().isBlank()) {
             return ResponseEntity.ok(taskService.add(task));
         }
 
@@ -102,7 +101,9 @@ public class TaskController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues taskSearchValues) throws ParseException {
+    public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues taskSearchValues, @AuthenticationPrincipal Jwt jwt) throws ParseException {
+
+        taskSearchValues.setUserID(jwt.getSubject());
 
         String title = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
 
@@ -111,17 +112,13 @@ public class TaskController {
         Long priorityId = taskSearchValues.getPriorityId() != null ? taskSearchValues.getPriorityId() : null;
         Long categoryId = taskSearchValues.getCategoryId() != null ? taskSearchValues.getCategoryId() : null;
 
-        Long userId = taskSearchValues.getUserID() != null ? taskSearchValues.getUserID() : null;
+        String userId = taskSearchValues.getUserID();
 
         Integer pageNumber = taskSearchValues.getPageNumber() != null ? taskSearchValues.getPageNumber() : null;
         Integer pageSize = taskSearchValues.getPageSize() != null ? taskSearchValues.getPageSize() : null;
 
         String sortColumn = taskSearchValues.getSortColumn() != null ? taskSearchValues.getSortColumn() : null;
         String sortDirection = taskSearchValues.getSortDirection() != null ? taskSearchValues.getSortDirection() : null;
-
-        if (userId == null || userId == 0) {
-            return new ResponseEntity("missed param: email", HttpStatus.NOT_ACCEPTABLE);
-        }
 
         Date dateFrom = null;
         Date dateTo = null;

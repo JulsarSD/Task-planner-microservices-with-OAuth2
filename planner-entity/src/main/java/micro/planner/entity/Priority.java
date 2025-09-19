@@ -28,7 +28,7 @@ public class Priority {
     private String color;
 
     @Column(name="user_id")
-    private Long userID;
+    private String userID;
 
     @Override
     public String toString() {

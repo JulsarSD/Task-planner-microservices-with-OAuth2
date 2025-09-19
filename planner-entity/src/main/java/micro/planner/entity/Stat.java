@@ -28,6 +28,6 @@ public class Stat {
     private Long uncompletedTotal;
 
     @Column(name="user_id")
-    private Long userID;
+    private String userID;
 
 }

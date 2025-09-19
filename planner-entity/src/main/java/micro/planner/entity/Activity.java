@@ -30,6 +30,6 @@ public class Activity {
     private boolean activated;
 
     @Column(name="user_id")
-    private Long userID;
+    private String userID;
 
 }

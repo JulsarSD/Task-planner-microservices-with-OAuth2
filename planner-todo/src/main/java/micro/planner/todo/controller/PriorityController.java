@@ -1,12 +1,13 @@
 package micro.planner.todo.controller;
 
 import micro.planner.entity.Priority;
-import micro.planner.todo.feign.UserFeignClient;
 import micro.planner.todo.search.PrioritySearchValues;
 import micro.planner.todo.service.PriorityService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,21 +20,19 @@ public class PriorityController {
 
     private PriorityService priorityService;
 
-
-    private UserFeignClient userFeignClient;
-
-    public PriorityController(PriorityService priorityService, UserFeignClient userFeignClient) {
+    public PriorityController(PriorityService priorityService) {
         this.priorityService = priorityService;
-        this.userFeignClient = userFeignClient;
     }
 
     @PostMapping("/all")
-    public List<Priority> findAll(@RequestBody Long id) {
+    public List<Priority> findAll(@RequestBody String id) {
         return priorityService.findAll(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Priority> add(@RequestBody Priority priority) {
+    public ResponseEntity<Priority> add(@RequestBody Priority priority, @AuthenticationPrincipal Jwt jwt) {
+
+        priority.setUserID(jwt.getSubject());
 
         if (priority.getId() != null && priority.getId() != 0) {
             return new ResponseEntity("redundant param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
@@ -47,7 +46,7 @@ public class PriorityController {
             return new ResponseEntity("missed param: title MUST be not null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (userFeignClient.findUserById(priority.getUserID()) != null) {
+        if (!priority.getUserID().isBlank()) {
             return ResponseEntity.ok(priorityService.add(priority));
         }
 
@@ -87,9 +86,11 @@ public class PriorityController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Priority>> search(@RequestBody PrioritySearchValues prioritySearchValues) {
+    public ResponseEntity<List<Priority>> search(@RequestBody PrioritySearchValues prioritySearchValues, @AuthenticationPrincipal Jwt jwt) {
 
-        if (prioritySearchValues.getUserID() == null && prioritySearchValues.getUserID() == 0) {
+        prioritySearchValues.setUserID(jwt.getSubject());
+
+        if (prioritySearchValues.getUserID().isBlank()) {
             return new ResponseEntity("missed param: user id", HttpStatus.NOT_ACCEPTABLE);
         }
 

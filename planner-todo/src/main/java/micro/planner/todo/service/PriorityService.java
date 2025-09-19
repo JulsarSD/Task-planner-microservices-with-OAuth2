@@ -29,7 +29,7 @@ public class PriorityService {
         repository.deleteById(id);
     }
 
-    public List<Priority> findByTitle(String text, Long userId){
+    public List<Priority> findByTitle(String text, String userId){
         return repository.findByTitle(text, userId);
     }
 
@@ -37,7 +37,7 @@ public class PriorityService {
         return repository.findById(id).get();
     }
 
-    public List<Priority> findAll(Long userId) {
+    public List<Priority> findAll(String userId) {
         return repository.findByUserIDOrderByTitleAsc(userId);
     }
 }

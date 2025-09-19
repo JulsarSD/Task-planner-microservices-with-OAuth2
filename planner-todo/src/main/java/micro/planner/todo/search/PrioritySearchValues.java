@@ -12,5 +12,5 @@ import lombok.Setter;
 
 public class PrioritySearchValues {
     private String title;
-    private Long userID;
+    private String userID;
 }

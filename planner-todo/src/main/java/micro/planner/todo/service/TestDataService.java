@@ -27,12 +27,12 @@ public class TestDataService {
     }
 
     @KafkaListener(topics = "java-test")
-    public void listenerKafka(Long userId){
+    public void listenerKafka(String userId){
         System.out.println("new userId = " + userId);
         initTestData(userId);
     }
 
-    public void initTestData(Long userId){
+    public void initTestData(String userId){
         Priority prior1 = new Priority();
         prior1.setColor("#fff");
         prior1.setTitle("Высокий");
@@ -63,7 +63,7 @@ public class TestDataService {
         c.add(Calendar.DATE, 1);
         tomorrow = c.getTime();
 
-        Date oneWeek = new Date();
+        Date oneWeek;
         Calendar c2 = Calendar.getInstance();
         c2.setTime(tomorrow);
         c2.add(Calendar.DATE, 7);

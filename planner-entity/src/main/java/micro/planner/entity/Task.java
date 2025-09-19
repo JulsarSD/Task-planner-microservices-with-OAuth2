@@ -43,7 +43,7 @@ public class Task {
     private Priority priority;
 
     @Column(name="user_id")
-    private Long userID;
+    private String userID;
 
     @Override
     public String toString() {

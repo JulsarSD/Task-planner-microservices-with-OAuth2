@@ -1,14 +1,13 @@
 package micro.planner.todo.controller;
 
-
 import micro.planner.entity.Category;
-import micro.planner.entity.User;
-import micro.planner.todo.feign.UserFeignClient;
 import micro.planner.todo.search.CategorySearchValues;
 import micro.planner.todo.service.CategoryService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,20 +20,19 @@ public class CategoryController {
 
     private CategoryService categoryService;
 
-    private UserFeignClient userFeignClient;
-
-    public CategoryController(CategoryService categoryService, UserFeignClient userFeignClient) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.userFeignClient = userFeignClient;
     }
 
     @PostMapping("/all")
-    public List<Category> findAll(@RequestBody Long id) {
+    public List<Category> findAll(@RequestBody String id) {
         return categoryService.findAll(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Category> add(@RequestBody Category category) {
+    public ResponseEntity<Category> add(@RequestBody Category category, @AuthenticationPrincipal Jwt jwt) {
+
+        category.setUserID(jwt.getSubject());
 
         if (category.getId() != null && category.getId() != 0) {
             return new ResponseEntity("redundant param: id MUST be null", HttpStatus.NOT_ACCEPTABLE);
@@ -44,13 +42,7 @@ public class CategoryController {
             return new ResponseEntity("missed param: title MUST be not null", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        ResponseEntity<User> result = userFeignClient.findUserById(category.getUserID());
-
-        if (result == null) {
-            return new ResponseEntity("Система пользователей недоступна, попробуйте позже", HttpStatus.NOT_FOUND);
-        }
-
-        if (result != null) {
+        if (!category.getUserID().isBlank()) {
             return ResponseEntity.ok(categoryService.add(category));
         }
 
@@ -86,9 +78,11 @@ public class CategoryController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues) {
+    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues, @AuthenticationPrincipal Jwt jwt) {
 
-        if (categorySearchValues.getUserID() == null || categorySearchValues.getUserID() == 0) {
+        categorySearchValues.setUserID(jwt.getSubject());
+
+        if (categorySearchValues.getUserID().isBlank()) {
             return new ResponseEntity("missed param: user id", HttpStatus.NOT_ACCEPTABLE);
         }
 

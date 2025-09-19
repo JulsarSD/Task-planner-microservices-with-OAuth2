@@ -32,10 +32,12 @@ dependencies {
 	implementation 'org.springframework.kafka:spring-kafka'
 
 	implementation 'com.google.guava:guava:33.0.0-jre'
-	implementation 'micro.planner:planner-entity'
-	implementation 'micro.planner:planner-utils'
+	implementation 'micro.planner:planner-entity:+'
+	implementation 'micro.planner:planner-utils:+'
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
 	runtimeOnly 'org.postgresql:postgresql'
 
