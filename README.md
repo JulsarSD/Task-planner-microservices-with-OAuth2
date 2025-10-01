@@ -19,9 +19,9 @@ Planner is a full-featured system for managing personal tasks, built on a micros
 
 ```mermaid
 graph TB
-    Client --> API Gateway 
-    API Gateway --> Users
-    API Gateway --> Todo
+    Client --> Gateway 
+    Gateway --> Users
+    Gateway --> Todo
     Users --> Keycloak
     Todo --> Keycloak
     Users --> Eureka Server
