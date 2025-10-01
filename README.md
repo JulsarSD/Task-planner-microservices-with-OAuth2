@@ -1,5 +1,5 @@
 
-# 🚀 Planner Microservices System
+# 🚀 Planner Microservices System with OAuth2
 
 **Modern task management system based on microservices architecture**
 
