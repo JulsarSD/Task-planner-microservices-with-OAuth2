@@ -3,12 +3,14 @@
 
 **Modern task management system based on microservices architecture**
 
-[![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
-[![Spring Boot 3.5](https://img.shields.io/badge/Spring_Boot-3.5.0-green.svg)](https://spring.io/projects/spring-boot)
-[![Spring Cloud 2024](https://img.shields.io/badge/Spring_Cloud-2024.0.1-brightgreen.svg)](https://spring.io/projects/spring-cloud)
-[![Keycloak 26](https://img.shields.io/badge/Keycloak-26.0.6-orange.svg)](https://www.keycloak.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)
+
+[![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)  
+[![Spring Boot 3.5](https://img.shields.io/badge/Spring_Boot-3.5.0-green.svg)](https://spring.io/projects/spring-boot)  
+[![Spring Cloud 2024](https://img.shields.io/badge/Spring_Cloud-2024.0.1-brightgreen.svg)](https://spring.io/projects/spring-cloud)  
+[![Keycloak 26](https://img.shields.io/badge/Keycloak-26.0.6-orange.svg)](https://www.keycloak.org/)  
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)  
 [![Kafka](https://img.shields.io/badge/Apache_Kafka-3+-black.svg)](https://kafka.apache.org/)
+
 
 
 ## 📖 About the project
@@ -19,15 +21,15 @@ Planner is a full-featured system for managing personal tasks, built on a micros
 
 ```mermaid
 graph TB
-    Client --> Gateway 
-    Gateway --> Users
-    Gateway --> Todo
+    Client --> API_Gateway 
+    API_Gateway --> Users
+    API_Gateway --> Todo
     Users --> Keycloak
     Todo --> Keycloak
-    Users --> Eureka Server
-    Todo --> Eureka Server
-    Config Server --> Users
-    Config Server --> Todo
+    Users --> Eureka_Server
+    Todo --> Eureka_Server
+    Config_Server --> Users
+    Config_Server --> Todo
     Users --> Kafka
     Kafka --> Todo
 ```
