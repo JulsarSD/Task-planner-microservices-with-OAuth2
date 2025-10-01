@@ -3,12 +3,12 @@
 
 **Modern task management system based on microservices architecture**
 
-[![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
-[![Spring Boot 3.5](https://img.shields.io/badge/Spring_Boot-3.5.0-green.svg)](https://spring.io/projects/spring-boot)
-[![Spring Cloud 2024](https://img.shields.io/badge/Spring_Cloud-2024.0.1-brightgreen.svg)](https://spring.io/projects/spring-cloud)
-[![Keycloak 26](https://img.shields.io/badge/Keycloak-26.0.6-orange.svg)](https://www.keycloak.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)
-[![Kafka](https://img.shields.io/badge/Apache_Kafka-3+-black.svg)](https://kafka.apache.org/)
+![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
+![Spring Boot 3.5](https://img.shields.io/badge/Spring_Boot-3.5.0-green.svg)](https://spring.io/projects/spring-boot)
+![Spring Cloud 2024](https://img.shields.io/badge/Spring_Cloud-2024.0.1-brightgreen.svg)](https://spring.io/projects/spring-cloud)
+![Keycloak 26](https://img.shields.io/badge/Keycloak-26.0.6-orange.svg)](https://www.keycloak.org/)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)
+![Kafka](https://img.shields.io/badge/Apache_Kafka-3+-black.svg)](https://kafka.apache.org/)
 
 
 ## 📖 About the project
