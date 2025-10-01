@@ -216,10 +216,10 @@ POST https://localhost:8765/planner-users/admin/user/add
 Content-Type: application/json
 
 {
-        "username": "newUser14",
-        "email": "new14@mail.ru",
-        "password": "sfgvb"
-    }
+    "username": "newUser14",
+    "email": "new14@mail.ru",
+    "password": "sfgvb"
+}
 ```
 
 ### Create Task  
@@ -228,16 +228,16 @@ POST http://localhost:8765/planner-todo/task/add
 Content-Type: application/json
 
 {
-        "title": "Finish project",
-        "completed": false,
-        "taskDate": "2025-06-01",
-        "category": {
-            "id": 25
-        },
-        "priority": {
-            "id": 17
-        }
+    "title": "Finish project",
+    "completed": false,
+    "taskDate": "2025-06-01",
+    "category": {
+        "id": 25
+    },
+    "priority": {
+        "id": 17
     }
+}
 ```
 
 ## 💡 Future Development 
